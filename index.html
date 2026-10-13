@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#10182b" />
+    <meta name="description" content="数学91題を2周するための演習チェックリスト。進捗は端末内に保存できます。" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="数学91" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="icon" href="./icons/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      (() => {
+        let theme = null;
+        try { theme = localStorage.getItem('math91.theme'); } catch (_) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <script src="./app.js" defer></script>
+    <title>数学91 | 演習チェック</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">∑</div>
+          <div class="brand-type">
+            <span class="brand-title">MATH / 91</span>
+            <span class="brand-caption">EXERCISE TRACKER</span>
+          </div>
+        </div>
+        <button id="theme-toggle" class="icon-button" type="button" aria-label="テーマを切り替える" title="テーマを切り替える">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 14.1A9 9 0 0 1 9.9 3.2 9 9 0 1 0 20.8 14.1Z"/></svg>
+        </button>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR DAILY PROGRESS</div>
+          <h1 id="page-title">積み上げた分だけ、<br /><span>強くなる。</span></h1>
+          <p class="intro-text">全91題 × 2周。今日の一問を、確かな前進に。</p>
+        </section>
+
+        <section class="summary-panel" aria-labelledby="progress-title">
+          <div class="summary-heading">
+            <div>
+              <div class="section-kicker">TOTAL PROGRESS</div>
+              <h2 id="progress-title">総合進捗</h2>
+            </div>
+            <div class="percentage"><span id="total-percent">0</span><span class="percentage-unit">%</span></div>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="総合進捗" aria-valuemin="0" aria-valuemax="182" aria-valuenow="0" id="total-progress-bar">
+            <div class="progress-fill" id="total-fill"></div>
+          </div>
+          <div class="summary-foot"><span id="total-checked">0 / 182 チェック完了</span><span id="fully-complete">2周完了 0 / 91題</span></div>
+          <div class="rounds">
+            <div class="round-stat">
+              <div class="round-stat-heading"><span class="round-dot round-one"></span><span>1周目</span><strong id="round-one-count">0 / 91</strong></div>
+              <div class="mini-track"><div id="round-one-fill" class="mini-fill round-one-fill"></div></div>
+            </div>
+            <div class="round-stat">
+              <div class="round-stat-heading"><span class="round-dot round-two"></span><span>2周目</span><strong id="round-two-count">0 / 91</strong></div>
+              <div class="mini-track"><div id="round-two-fill" class="mini-fill round-two-fill"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="list-section" aria-labelledby="list-title">
+          <div class="list-heading">
+            <div>
+              <div class="section-kicker">CHECKLIST</div>
+              <h2 id="list-title">演習リスト <span class="list-subtitle">01 — 91</span></h2>
+            </div>
+            <button id="next-button" class="next-button" type="button">次の未完了へ <span aria-hidden="true">↗</span></button>
+          </div>
+
+          <div class="tools">
+            <div class="segmented" aria-label="項目の表示フィルター" role="group">
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">すべて</button>
+              <button class="filter-button" type="button" data-filter="todo" aria-pressed="false">未完了</button>
+              <button class="filter-button" type="button" data-filter="done" aria-pressed="false">2周完了</button>
+            </div>
+            <div class="range-wrap">
+              <label for="range-select">表示範囲</label>
+              <select id="range-select" aria-label="問題番号の表示範囲">
+                <option value="all">1–91番（すべて）</option>
+                <option value="1-20">1–20番</option>
+                <option value="21-40">21–40番</option>
+                <option value="41-60">41–60番</option>
+                <option value="61-80">61–80番</option>
+                <option value="81-91">81–91番</option>
+              </select>
+            </div>
+          </div>
+          <div class="list-meta"><span id="visible-count">91件を表示</span><span class="legend">各番号につき2チェック</span></div>
+          <div class="checklist" id="checklist" aria-live="off"></div>
+          <div id="empty-state" class="empty-state" hidden>
+            <div class="empty-icon" aria-hidden="true">✓</div>
+            <p id="empty-message">この条件に一致する問題はありません。</p>
+            <button id="clear-filters" type="button">すべて表示する</button>
+          </div>
+        </section>
+
+        <section class="data-section" aria-labelledby="data-title">
+          <div>
+            <div class="section-kicker">YOUR DATA</div>
+            <h2 id="data-title">データ管理</h2>
+            <p>チェック状態はこの端末内に自動保存されます。ブラウザのデータ削除や端末変更に備え、バックアップがおすすめです。</p>
+          </div>
+          <div class="data-buttons">
+            <button id="export-button" class="utility-button" type="button">バックアップを保存</button>
+            <button id="import-button" class="utility-button" type="button">バックアップを復元</button>
+            <button id="reset-button" class="utility-button danger-button" type="button">全件リセット</button>
+            <input id="import-input" type="file" accept=".json,application/json" hidden />
+          </div>
+        </section>
+      </main>
+      <footer>
+        <span>MATH / 91</span>
+        <span>ONE PROBLEM AT A TIME.</span>
+      </footer>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
